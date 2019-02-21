@@ -867,6 +867,9 @@ read_nodes(FqnExprPath, Pythonpaths, Nodes, Meta) :-
     my_json_read_dict(FqnExprStream, MetaDict),
     my_json_read_dict(FqnExprStream, JsonDict),
     simplify_meta(MetaDict, Pythonpaths, Meta),
+    % json_read_dict doesn't consume the final '\n'
+    read_string(FqnExprStream, 1, LastChar),
+    must_once(LastChar == "\n"),
     must_once(
         at_end_of_stream(FqnExprStream)),
     do_if(false,
